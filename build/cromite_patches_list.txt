@@ -253,7 +253,6 @@ Disable-Read-Aloud-by-default.patch
 Disable-Compose-feature.patch
 Disable-offline-autofetch-flag.patch
 Show-NTP-at-startup.patch
-Enable-platform-aac-audio-and-h264-video.patch
 Disable-Paint-Preview-by-default.patch
 Do-not-use-Windows-ClearType-Text-Tuner-setting.patch
 Private-network-access-content-settings.patch
