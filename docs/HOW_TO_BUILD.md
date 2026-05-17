@@ -50,3 +50,37 @@ You can use the [script](https://github.com/uazo/cromite/blob/master/tools/image
 
 all release builds are done via the [action available](https://github.com/uazo/cromite/blob/master/.github/workflows/build_cromite.yaml) from which you can see the mode I have adopted.
 
+Example building process:
+
+
+```bash
+cat build/RELEASE      # this must match docker img version eg. 147.0.7727.102
+
+docker create --name cromite-dev \
+    -v "$PWD:/work" \
+    -w /work \
+    --entrypoint tail \
+    uazo/cromite-build:147.0.7727.56-271900671db643de04aa9f909f0dcc3415c8b827 \    # docker img version
+    -f /dev/null
+
+docker start cromite-dev
+docker exec -it cromite-dev bash
+
+# (Inside container)
+export HOME=/home/lg/working_dir
+export WORKSPACE=/home/lg/working_dir
+PATH=$WORKSPACE/chromium/src/third_party/llvm-build/Release+Asserts/bin:$WORKSPACE/depot_tools/:/usr/local/go/bin:$WORKSPACE/mtool/bin:$PATH
+cd $HOME
+cd chromium/src/
+
+# clean build (upstream cromite)
+# gn gen --args="target_os = \"android\" $(cat /home/lg/working_dir/cromite/build/cromite.gn_args) target_cpu = \"arm64\" " out/arm64
+
+# build with changes (this fork)
+gn gen --args="target_os = \"android\" $(cat /work/build/cromite.gn_args) target_cpu = \"arm64\" " out/arm64
+
+unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+
+vpython3 /home/lg/working_dir/depot_tools/siso.py ninja -C out/arm64 chrome_public_apk --offline
+cp -r out/arm64/apks/ /work/out
+```
