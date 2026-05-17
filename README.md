@@ -7,6 +7,8 @@
 
 # Cromite (a Bromite fork) - Take back your browser
 
+# IMPORTANT: This  is a soft fork of cromite that restores build in chromium codecs instead of relying on system ones as some custom ROMs have those codes broken. 
+
 <a href="https://www.cromite.org">
   <img title="Cromite - take back your browser!" src="https://www.cromite.org/app_icon.png" width="96" alt="Bromite" />
 </a>
